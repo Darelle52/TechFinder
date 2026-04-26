@@ -2,69 +2,54 @@
 
 @section('main')
     <main class="flex-grow-1 container mt-4">
-        <h1>Compétences</h1>
+        <h1 style="font-size: 22px; font-weight: 500; margin-bottom: 20px; color: #1e293b;">Compétences</h1>
 
-        {{-- Message de succès --}}
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        {{-- Formulaire d'ajout --}}
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5>Ajouter une compétence</h5>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('web.competences.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label class="form-label">Label</label>
-                        <input type="text" name="label_comp" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea name="description_comp" class="form-control" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
-                </form>
-            </div>
+        <div class="page-card">
+            <div class="card-header-custom">Ajouter une compétence</div>
+            <form action="{{ route('web.competences.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label" style="font-size:12px; color:#64748b;">Label</label>
+                    <input type="text" name="label_comp" class="form-control form-control-sm" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" style="font-size:12px; color:#64748b;">Description</label>
+                    <textarea name="description_comp" class="form-control form-control-sm" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-primary-custom">Ajouter</button>
+            </form>
         </div>
 
-        {{-- Tableau --}}
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Label</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($competences_list as $competence)
+        <div class="page-card">
+            <table class="table table-hover mb-0">
+                <thead>
                     <tr>
-                        <td>{{ $competence->code_comp }}</td>
-                        <td>{{ $competence->label_comp }}</td>
-                        <td>{{ $competence->description_comp }}</td>
-                        <td>
-                            {{-- Bouton Modifier --}}
-                            <a href="{{ route('web.competences.edit', $competence->code_comp) }}"
-                               class="btn btn-warning btn-sm">Modifier</a>
-
-                            {{-- Bouton Supprimer --}}
-                            <form action="{{ route('web.competences.destroy', $competence->code_comp) }}"
-                                  method="POST" style="display:inline-block"
-                                  onsubmit="return confirm('Supprimer cette compétence ?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                            </form>
-                        </td>
+                        <th>Code</th><th>Label</th><th>Description</th><th>Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{-- Liens de pagination --}}
+                </thead>
+                <tbody>
+                    @foreach ($competences_list as $competence)
+                        <tr>
+                            <td style="font-size:13px;">{{ $competence->code_comp }}</td>
+                            <td style="font-size:13px;">{{ $competence->label_comp }}</td>
+                            <td style="font-size:13px;">{{ $competence->description_comp }}</td>
+                            <td>
+                                <a href="{{ route('web.competences.edit', $competence->code_comp) }}"
+                                   class="btn-edit-custom">Modifier</a>
+                                <form action="{{ route('web.competences.destroy', $competence->code_comp) }}"
+                                      method="POST" style="display:inline-block"
+                                      onsubmit="return confirm('Supprimer cette compétence ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete-custom">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
         <div class="d-flex justify-content-center mt-3">
             {{ $competences_list->links() }}
         </div>
